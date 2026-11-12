@@ -7,4 +7,5 @@ def consultar_model(modelo, mensagens):
         messages = mensagens,
         stream = True
         )
+    
     return resposta
