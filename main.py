@@ -7,5 +7,8 @@ mensagem = [
     {"role": "user", "content": Pergunta}
 ]
 
-resposta = consultar_model(modelo = "qwen3.5:0.8b", mensagens = mensagem)
-print(resposta)
+resposta = consultar_model(modelo = "qwen3.5:9b", mensagens = mensagem)
+
+for parte in resposta:
+    print(parte.message.content, end="", flush=True)
+
