@@ -2,7 +2,7 @@ import streamlit as st
 from leia.cliente_ollama import consultar_model
 
 
-MODELO = "qwen3.5:9b"
+MODELO = "qwen3.5:0.8b"
 
 
 def aplicar_estilo_figma():
