@@ -1,0 +1,33 @@
+# Cache e arquivos compilados do Python
+__pycache__/
+*.py[cod]
+
+# Ambientes virtuais
+.venv/
+venv/
+env/
+
+# Variaveis de ambiente e segredos locais
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# Cache de testes e ferramentas
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Arquivos de distribuicao
+build/
+dist/
+*.egg-info/
+
+# Configuracoes locais de editores e sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
