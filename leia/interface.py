@@ -2,7 +2,7 @@ import streamlit as st
 from leia.cliente_ollama import consultar_model
 
 
-MODELO = "qwen3.5:0.8b"
+MODELO = "gpt-oss:20b"
 
 
 def aplicar_estilo_figma():
@@ -238,25 +238,30 @@ def aplicar_estilo_figma():
 
 
 def processar_pergunta(pergunta_usuario: str):
-    st.session_state.mensagens.append({"role": "user", "content": pergunta_usuario})
+    mensagens = st.session_state.mensagens
+    mensagens.append({"role": "user", "content": pergunta_usuario})
+
     with st.chat_message("user"):
         st.markdown(pergunta_usuario)
 
     with st.chat_message("assistant"):
-        with st.spinner("LeIA está analisando sua dúvida..."):
-            try:
-                resposta_completa = consultar_model(
-                    modelo=MODELO,
-                    mensagens=st.session_state.mensagens
-                )
-                texto_resposta = resposta_completa["message"]["content"]
-                st.markdown(texto_resposta)
-                st.session_state.mensagens.append({"role": "assistant", "content": texto_resposta})
-            except Exception:
-                st.error(
-                    f"Erro ao conectar com o Ollama. Verifique se o programa está aberto "
-                    f"e se o modelo `{MODELO}` foi baixado."
-                )
+        try:
+            trechos = consultar_model(modelo=MODELO, mensagens=mensagens)
+
+            texto_resposta = st.write_stream(
+                trecho.message.content
+                for trecho in trechos
+                if trecho.message.content
+            )
+        except Exception as erro:
+            st.error(f"Erro ao gerar a resposta: {erro}")
+            return
+
+        if not texto_resposta:
+            st.warning("O modelo retornou uma resposta sem texto.")
+            return
+
+        mensagens.append({"role": "assistant", "content": texto_resposta})
 
 
 def iniciar_interface():
